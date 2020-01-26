@@ -1,5 +1,7 @@
 source ../dap.config
 
+set -euo pipefail
+
 # ejecutar el contenedor de conjur
 docker run -d \
     --name $CONJUR_MASTER_CONTAINER_NAME \
