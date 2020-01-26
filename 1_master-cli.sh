@@ -3,7 +3,6 @@ source ../dap.config
 # ejecutar el contenedor de conjur
 docker run -d \
     --name $CONJUR_MASTER_CONTAINER_NAME \
-    --label role=conjur_node \
     -p "443:443" \
     -p "5432:5432" \
     -p "1999:1999" \
