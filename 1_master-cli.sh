@@ -25,5 +25,7 @@ docker exec $CONJUR_MASTER_CONTAINER_NAME \
 #extraer el certificado 
 docker cp -L $CONJUR_MASTER_CONTAINER_NAME:/opt/conjur/etc/ssl/conjur.pem conjur-master-$CONJUR_ACCOUNT.pem
 
+# obtener la semilla para instalar el follower
+docker exec $CONJUR_MASTER_CONTAINER_NAME evoke seed follower conjur-follower > follower-seed.tar
 
 
