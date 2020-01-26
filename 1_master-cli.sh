@@ -3,7 +3,7 @@ source ./dap.config
 set -euo pipefail
 
 # ejecutar el contenedor de conjur
-docker run -d \
+#docker run -d \
     --name $CONJUR_MASTER_CONTAINER_NAME \
     -p "443:443" \
     -p "5432:5432" \
@@ -17,6 +17,7 @@ docker run -d \
 echo "Configuring Conjur master..."
 docker exec $CONJUR_MASTER_CONTAINER_NAME \
     evoke configure master     \
+    --accept-eula \
     -h $CONJUR_MASTER_HOST_NAME \
     -p $CONJUR_ADMIN_PASSWORD \
     --master-altnames "$MASTER_ALTNAMES" \
