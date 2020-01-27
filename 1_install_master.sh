@@ -1,4 +1,4 @@
-source ./dap.config
+source ./config.sh
 
 set -euo pipefail
 
