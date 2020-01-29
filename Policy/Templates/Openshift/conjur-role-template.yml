@@ -1,0 +1,60 @@
+# conjur-role.yml
+---
+apiVersion: v1
+kind: Project
+metadata:
+  name: {{ OC_FOLLOWER_PROJECT }}
+  labels:
+    name: {{ OC_FOLLOWER_PROJECT }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ OC_CONJUR_SVC_ACCT }}
+  namespace: {{ OC_FOLLOWER_PROJECT }}
+---
+apiVersion: v1
+kind: ClusterRole
+metadata:
+  name: conjur-authenticator-{{ OC_FOLLOWER_PROJECT }}
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods", "serviceaccounts"]
+  verbs: ["get", "list"]
+- apiGroups: ["extensions"]
+  resources: [ "deployments", "replicasets"]
+  verbs: ["get", "list"]
+- apiGroups: ["apps"]
+  resources: [ "deployments", "statefulsets", "replicasets"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create", "get"]
+---
+kind: RoleBinding
+apiVersion: v1
+metadata:
+  name: conjur-authenticator-{{ OC_FOLLOWER_PROJECT }}
+subjects:
+- kind: ServiceAccount
+  name: {{ OC_CONJUR_SVC_ACCT }}
+  namespace: {{ OC_FOLLOWER_PROJECT }}
+roleRef:
+  kind: ClusterRole
+  name: conjur-authenticator-{{ OC_FOLLOWER_PROJECT }}
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ OC_FOLLOWER_PROJECT }}
+  name: {{ OC_FOLLOWER_APP_LABEL }}
+  labels:
+    app: {{ OC_FOLLOWER_APP_LABEL }}
+spec:
+  ports:
+  - port: 443
+    name: https
+  selector:
+    app: {{ OC_FOLLOWER_APP_LABEL }}
+
