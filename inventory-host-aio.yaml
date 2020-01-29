@@ -1,5 +1,5 @@
 #
-# ansible inventory for OpenShift Container Platform  3.11.98
+# ansible inventory for OpenShift Container Platform  3.11.161
 #
 
 ###########################################################################
@@ -48,7 +48,7 @@ openshift_deployment_type=openshift-enterprise
 openshift_disable_check="disk_availability,memory_availability"
 
 # OpenShift Version(Always use sub-release for smoother upgrades):
-openshift_release=3.11.98
+openshift_release=3.11.161
 
 # Deploy Operator Lifecycle Manager (Tech Preview)
 openshift_enable_olm=true
@@ -223,7 +223,12 @@ openshift_logging_es_cluster_size=1
 openshift_logging_es_cpu_limit=500m
 openshift_logging_es_memory_limit=1Gi
 # PVC size omitted == ephemeral vols are used
-#openshift_logging_es_pvc_siz=10G
+#openshift_logging_es_pvc_size=10G
+openshift_logging_elasticsearch_storage_type=pvc
+openshift_logging_es_pvc_size=10Gi
+openshift_logging_es_pvc_storage_class_name=''
+openshift_logging_es_pvc_dynamic=true
+openshift_logging_es_pvc_prefix=logging
 openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra": "true"}
 
 # Kibana
