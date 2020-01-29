@@ -35,10 +35,10 @@ docker exec $CONJUR_MASTER_CONTAINER_NAME evoke ca issue --force \
 docker exec $CONJUR_MASTER_CONTAINER_NAME evoke seed follower $OC_FOLLOWER_EXT_FQDN > follower-seed.tar
 
 # prepare policy file for authenticators
-cat "./kubernetes-followers-template.yml" | \
+cat ".Policy/Templates/kubernetes-followers-template.yml" | \
   sed -e "s#{{ OC_FOLLOWER_PROJECT }}#$OC_FOLLOWER_PROJECT#g"  | \
   sed -e "s#{{ OC_CONJUR_SVC_ACCT }}#$OC_CONJUR_SVC_ACCT#g"  | \
-  > ./policy/kubernetes-followers.yml
+  > ./Policy/kubernetes-followers.yml
 
 read -p "\n==== Review root.yml before moving on to the next step and press enter to continue ====\n"
 
@@ -51,7 +51,7 @@ DAP_AUTH_HEADER="Authorization: Token token=\"$DAP_TOKEN\""
 
 # load policy for authenticators/followers
 POST_URL="https://$CONJUR_MASTER_HOST_NAME/policies/$CONJUR_ACCOUNT/policy/root"
-curl -sk -H "$DAP_AUTH_HEADER" -d "$(< ./policy/kubernetes-followers.yml)" $POST_URL
+curl -sk -H "$DAP_AUTH_HEADER" -d "$(< ./Policy/kubernetes-followers.yml)" $POST_URL
 
 # initialize CA
 
